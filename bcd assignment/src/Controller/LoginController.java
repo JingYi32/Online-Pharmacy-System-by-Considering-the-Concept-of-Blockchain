@@ -5,18 +5,6 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class LoginController {
-	public void Login() {
-		Scanner sc = new Scanner(System.in);
-		System.out.println();
-		System.out.println("==================================================");
-		System.out.println();
-		System.out.println("Enter username: ");
-		String username = sc.next();
-		System.out.println("Enter password: ");
-		String pwd = sc.next();
-		boolean hi = verify(username, pwd);
-		sc.close();
-	}
 	
     public boolean verify(String username, String password) {
         String uuid = getUUID(username);
