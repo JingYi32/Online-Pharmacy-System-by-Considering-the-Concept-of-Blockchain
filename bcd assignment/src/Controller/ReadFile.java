@@ -6,6 +6,7 @@ import java.util.List;
 
 
 public class ReadFile {
+	
     public static void write(String filename, String text) {
         text += System.lineSeparator();
         try {
@@ -13,7 +14,6 @@ public class ReadFile {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     public static List<String> read(String filename) {
