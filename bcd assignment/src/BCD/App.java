@@ -10,7 +10,7 @@ public class App {
 		try {
 			switch(WelcomeController.getInput(WelcomeController.roleSelection())) {
 			case 1:
-				new LoginController().Login();
+				 new Login().Login();
 				break;
 			case 2:
 				Admin.admin();
