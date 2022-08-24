@@ -2,7 +2,6 @@ package BCD;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-
 import Controller.*;
 
 public class App {
