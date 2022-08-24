@@ -13,7 +13,11 @@ public class App {
 				try {
 					switch(verity(LoginOrSignin())) {
 					case 1:
-						new Signin().Signin();
+						try {
+							new Signin();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 						break;
 					case 2:
 						new Login().Login();
@@ -25,7 +29,6 @@ public class App {
 					System.out.println("Wrong Input!");
 					verity(LoginOrSignin());
 				}
-
 			case 2:
 				Admin.admin();
 				break;
@@ -35,6 +38,7 @@ public class App {
 			WelcomeController.getInput(WelcomeController.roleSelection());
 		}
 	}
+	
 	
 	private static int LoginOrSignin() {
 		Scanner sc = new Scanner(System.in);

@@ -32,7 +32,6 @@ public class ReadWriteBlockchain {
         } catch (Exception e) {
             return null;
         }
-
     }
 
     //display blockchain info (bytes)

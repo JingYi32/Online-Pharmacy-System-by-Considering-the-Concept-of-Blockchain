@@ -14,13 +14,9 @@ public class LoginController {
         List<String> credential = getCredential( uuid );
         //20487f0d-5c5c-48f2-8928-67a042b4ddad|ja8yYZw98+eqHfFbHx5Ofg==|a45faea0afc0ead2ea8b66325b18cc2f
         String[] secret = credential.get(0).split("\\|");
-        
-        System.out.println( "Random: "+ secret[1] );  
-        
+                
         String hash = Hasher.newhash( Txt.append(secret[1], password), "md5" );
-        
-        System.out.println( "hash: "+ hash );  
-        
+                
         return hash.equalsIgnoreCase( secret[2] );
     }
     

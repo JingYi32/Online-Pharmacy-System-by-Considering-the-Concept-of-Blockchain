@@ -8,7 +8,9 @@ public class Login {
 	public void Login() {
 		Scanner sc = new Scanner(System.in);
 		System.out.println();
+		System.out.println();
 		System.out.println("==================================================");
+		System.out.println("-- Login Page --");
 		System.out.println();
 		System.out.println("Enter username: ");
 		String username = sc.next();
@@ -22,6 +24,8 @@ public class Login {
 			System.out.println("Enter password: ");
 			v = new LoginController().verify(username, pwd);
 		}
+		System.out.println("Login Successfully");
 		sc.close();
+		Product.product();
 	}
 }

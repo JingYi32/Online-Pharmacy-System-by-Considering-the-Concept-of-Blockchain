@@ -1,0 +1,10 @@
+1|Dynadryl Cough Syrup|10.90
+2|Xyzal 5mg Tablet|15.60
+3|Symbicort 160/4.5mcg Turbuhaler -120 doses|144.55
+4|Nasodren 50mg/5ml Nasal Spray|96.00
+5|Viagra 100mg Tablet - Twin Pack|320.00
+6|Cialis 5mg Tablet|309.40
+7|Lipitor 20mg Tablet|120.90
+8|Hidrasec 10mg Granule|6.40
+9|Plaquenil 200mg Tablet|171.80
+10|Cinna 25mg Tablet|24.00

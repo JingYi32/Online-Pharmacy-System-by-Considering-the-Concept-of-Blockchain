@@ -1,4 +1,4 @@
-package blockchain;
+package BCD;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -11,6 +11,8 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import blockchain.Hasher;
 
 public class Order {
 
