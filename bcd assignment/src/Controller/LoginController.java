@@ -1,8 +1,9 @@
 package Controller;
 
 import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import blockchain.Hasher;
 
 public class LoginController {
 	
@@ -16,8 +17,7 @@ public class LoginController {
         
         System.out.println( "Random: "+ secret[1] );  
         
-        String hash = "";
-        //String hash = Hasher.md5( Txt.append(secret[1], password) );
+        String hash = Hasher.newhash( Txt.append(secret[1], password), "md5" );
         
         System.out.println( "hash: "+ hash );  
         
