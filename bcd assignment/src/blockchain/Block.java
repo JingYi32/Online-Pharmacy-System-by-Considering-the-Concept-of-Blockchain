@@ -4,27 +4,20 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.Calendar;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Block implements Serializable {
 	
 	private int index;
 	private String currentHash, previousHash;
 	private long timestamp;
-    private List<Order> orderList;
-    private Order order;
     private String merkleRoot;
     
-	public Block(String previousHash, List<Order> orderList) {
+	public Block(List<List<String>> odList, String previousHash) {
 		this.previousHash = previousHash;
-		this.orderList = orderList;
 		this.timestamp = Calendar.getInstance().getTimeInMillis();
-		this.currentHash = this.blockHashCode(genByteArr(orderList), previousHash, timestamp);
+		this.currentHash = this.blockHashCode(genByteArr(odList), previousHash, timestamp);
 		this.merkleRoot = merkleRoot;
 	}
 	
@@ -53,19 +46,14 @@ public class Block implements Serializable {
 			this.timestamp = timestamp;
 		}
 		
-		//not sure
+		//block to bytes
 		public String blockHashCode(byte[] data, String previousHash, long timestamp) {
 	        return Hasher.newhash(data + previousHash + timestamp, "SHA-256");
 	        
 	    }
 		
-		public Order getOrders(List<Order> orderList) {
-			return null;
-			
-		}
-		
-		//not sure
-		private static byte[] genByteArr(List<Order> odList) {
+		//order list to bytes
+		private static byte[] genByteArr(List<List<String>> odList) {
 	        ByteArrayOutputStream boas = new ByteArrayOutputStream();
 	        ObjectOutputStream out;
 	        if (odList != null) {

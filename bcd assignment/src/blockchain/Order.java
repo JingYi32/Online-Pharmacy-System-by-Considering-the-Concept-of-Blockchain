@@ -1,17 +1,16 @@
 package blockchain;
 
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.nio.file.Files;
+import java.io.ObjectOutputStream;
+import java.nio.channels.FileChannel;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 public class Order {
 
@@ -22,7 +21,6 @@ public class Order {
 	//private List<Product> orderItem;
 	private double paymentAmount;
 	private LocalDateTime orderTime;
-	private List<Order> orderList;
 	
 	public Order(String orderID, String userContact, String userAddress, double paymentAmount,
 			LocalDateTime orderTime) {
@@ -34,12 +32,12 @@ public class Order {
 		this.orderTime = orderTime;
 	}
 
-	public String getTransID() {
+	public String getOrderID() {
 		return orderID;
 	}
 
-	public void setTransID(String transID) {
-		this.orderID = transID;
+	public void setorderID(String orderID) {
+		this.orderID = orderID;
 	}
 
 	public String getUserContact() {
@@ -82,7 +80,17 @@ public class Order {
 		this.orderTime = orderTime;
 	}
 	
-	public List<Order> getOrderList() {
+	//insert new order into order list
+	public static void insert(Order newOrder) {
+        try (FileOutputStream fos = new FileOutputStream(file);
+                ObjectOutputStream out = new ObjectOutputStream(fos)) {
+            out.writeObject(newOrder);
+        } catch (Exception e) {
+        }
+    }
+	
+	//retrieve orderList
+	public static List<Order> getOrderList() {
 		try (FileInputStream fis = new FileInputStream(file);
                 ObjectInputStream in = new ObjectInputStream(fis)) {
             return (List<Order>) in.readObject();
@@ -90,5 +98,32 @@ public class Order {
             return null;
         }
 	}
+	
+	//hash orders
+	public static List<List<String>> hashOrders(){
+        List<Order> allOrders = getOrderList();
+        List<List<String>> hashedOrders = new ArrayList();
+        for (Order od : allOrders) {
+            List<String> hashLst = new ArrayList();
+            hashLst.add( Hasher.newhash(od.getOrderID(), "SHA-256") );
+            hashLst.add( Hasher.newhash(od.getUserContact().toString(), "SHA-256") );
+            hashLst.add( Hasher.newhash(od.getUserAddress(), "SHA-256") );
+            //hashLst.add( Hasher.newhash(od.getOrderItem(), "SHA-256") );
+            hashLst.add( Hasher.newhash(Double.toString(od.getPaymentAmount()), "SHA-256") );
+            hashLst.add( Hasher.newhash(od.getOrderTime().toString(), "SHA-256") );
+            hashedOrders.add(hashLst);
+        }
+        return hashedOrders;
+	}
+	
+	//empty file after putting into block
+	public static void clearTrnxFile(){
+        try {
+            FileChannel.open(Paths.get(file), StandardOpenOption.WRITE).truncate(0).close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 	
 }
