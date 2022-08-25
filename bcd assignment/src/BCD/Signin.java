@@ -3,8 +3,8 @@ package BCD;
 import java.util.List;
 import java.util.Scanner;
 
-import Controller.ReadFile;
-import Controller.SigninController;
+import Controller.*;
+import blockchain.KeyGen;
 
 
 public class Signin {
@@ -27,8 +27,7 @@ public class Signin {
 		String pwd = sc.next();
 		sc.close();
 		new SigninController();
-		SigninController.create(username, pwd);
+		String uuid = SigninController.create(username, pwd);
+		KeyGen.create(uuid);
 	}
-	
-	
 }
