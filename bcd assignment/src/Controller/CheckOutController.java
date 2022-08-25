@@ -21,6 +21,7 @@ public class CheckOutController {
 		System.out.println("Kindly provide the delivery details: ");
 		System.out.println("Contact\t: ");
 		contact = sc.next();
+		sc.nextLine();
 		System.out.println("Address\t: ");
 		address = sc.nextLine();
 		price = orderItem.stream().mapToDouble(i -> i.getPrice()).sum();
