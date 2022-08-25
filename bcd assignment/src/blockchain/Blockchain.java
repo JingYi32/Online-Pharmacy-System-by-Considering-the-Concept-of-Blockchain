@@ -1,5 +1,6 @@
 package blockchain;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,45 +12,50 @@ public class Blockchain {
 
     static LinkedList<Block> bc = new LinkedList<>();
     
-    public static void Blockchain() {
+    public static void Blockchain() throws IOException {
     	bc = ReadWriteBlockchain.get();
     	if (bc.equals(null)) {
-    		firstBlock();
+    		LinkedList<Block> bch = new LinkedList<>();
+    		firstBlock(bch);
     	}
     	else {
     		nextBlock();
     	}
     }
+    
+    public static void main(String[] args) throws IOException {
+    	LinkedList<Block> bc = ReadWriteBlockchain.get();
+    	if (bc == null) {
+    		LinkedList<Block> bch = new LinkedList<>();
+    		firstBlock(bch);
+    	}
+    	else {
+    		nextBlock();
+    	}
 
-    public static void firstBlock() {
-       
-        System.out.println("--- Transaction objects ---");
-        //List<Transaction> trnxPool = TrnxPoolAdapter.getTransactions();
-//        trnxPool.stream().forEach( System.out::println );
-        
-        System.out.println("--- Transactions with hashes ---");
-        //List<List<String>> trnxPool_hashes = TrnxPoolAdapter.getTransactionsHashes();
-//        System.out.println( trnxPool_hashes );
-        
-        
-//        Block b1 = new Block(trnxPool_hashes, "0"); //genesis block
-//        bc.add(b1);
+    }
+
+    public static void firstBlock(LinkedList<Block> bc) throws IOException {
+    	
+        List<List<String>> trnxPool_hashes = Order.hashOrders();
+        Block b1 = new Block(trnxPool_hashes, "0"); //genesis block
+        bc.add(b1);
         //clear the trnxpool.txt
         Order.clearTrnxFile();
         ReadWriteBlockchain.insert(bc);
         //distribute/display the linkedlist elements/blocks
-         out(bc);
+        //out(bc);
         
     }
     
-    public static void nextBlock(){
-        //List<List<String>> trnxPool_hashes = TrnxPoolAdapter.getTransactionsHashes();
+    public static void nextBlock() throws IOException{
         bc = ReadWriteBlockchain.get();
-        //Block block = new Block(trnxPool_hashes, bchain.getLast().getCurrentHash() );
-        //bc.add(block);
+        List<List<String>> trnxPool_hashes = Order.hashOrders();
+        Block block = new Block(trnxPool_hashes, bc.getLast().getCurrentHash() );
+        bc.add(block);
         Order.clearTrnxFile();
         ReadWriteBlockchain.insert(bc);
-        out(bc);
+        //out(bc);
 
     }
     

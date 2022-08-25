@@ -28,7 +28,7 @@ public class CheckOutController {
 		Order o = new Order(orderID, contact, address, orderItem, price ,LocalDateTime.now());
 		Order.insert(o);
 		System.out.println(Order.OrderItemString(orderItem));
-		String text = orderID + "|" + Order.OrderItemString(orderItem) + "|" + price + "|" + contact + "|" + address + "|" + LocalDateTime.now();
+		String text = orderID + "|" + contact + "|" + address + "|" + Order.OrderItemString(orderItem) + "|" + price +  "|" + LocalDateTime.now();
 		ReadFile.write("trnxpool.txt", text);
 	}
 }

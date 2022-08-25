@@ -1,6 +1,7 @@
 package blockchain;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
@@ -38,23 +39,13 @@ public class Hasher {
     }
 	
 	//merkle root
-	public static byte[] getBytes(Object o) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutput out = null;
-            if(o != null) {
-            	 try {
-            		 out = new ObjectOutputStream(bos);
-            		 out.writeObject(o);
-            		 out.flush();
-            	 } catch (Exception e) {
-            		 System.out.println(e.getMessage());
-            		 return null;
-            	 } 
-            	 return bos.toByteArray();
-            } else { 
-            	return null;
-            }  
-        }
+	public static byte[] convertToBytes(Object object) throws IOException {
+	    try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	         ObjectOutputStream out = new ObjectOutputStream(bos)) {
+	        out.writeObject(object);
+	        return bos.toByteArray();
+	    } 
+	}
 
     public static String hash(byte[] block, String algorithm) {
         try {

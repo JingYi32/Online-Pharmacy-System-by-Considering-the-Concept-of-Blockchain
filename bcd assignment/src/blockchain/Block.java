@@ -19,14 +19,14 @@ public class Block implements Serializable {
     private List<Order> orderList;
     private List<List<String>> data;
     
-	public Block(List<Order> orderList, String previousHash) {
+	public Block(List<List<String>> data, String previousHash) throws IOException {
 		this.previousHash = previousHash;
-		this.data = getOrders(orderList);
+		this.data = Order.hashOrders();
 		this.timestamp = Calendar.getInstance().getTimeInMillis();
 		this.currentHash = this.blockHashCode(genByteArr(data), previousHash, timestamp);
-		this.merkleRoot = buildMerkleRoot(orderList);
+		this.merkleRoot = buildMerkleRoot(Order.getOrderList());
 	}
-	
+	//this.data = getOrders(orderList);
 		public List<List<String>> getData() {
 			return data;
 		}
@@ -60,13 +60,13 @@ public class Block implements Serializable {
 		
 		//block to bytes
 		public String blockHashCode(byte[] data, String previousHash, long timestamp) {
-	        return Hasher.newhash(data + previousHash + timestamp, "SHA-256");
-	        
+	        return Hasher.newhash(data + previousHash + timestamp, "SHA-256");    
 	    }
 		
 		//get all orders
 		public List<List<String>> getOrders(List<Order> orderList){
-	        return data = Order.readOrders();
+	        data = Order.readOrders();
+			return data;
 		}
 		
 		//order list to bytes
@@ -88,11 +88,11 @@ public class Block implements Serializable {
 	        }
 	    }
 		
-		public String buildMerkleRoot(List<Order> orderList) {	
+		public String buildMerkleRoot(List<Order> orderList) throws IOException {	
 			ArrayList<byte[]> orderLst = new ArrayList<>();
-			
-			for (Order order : this.orderList) {
-				orderLst.add(Hasher.getBytes(order));
+
+			for (Order order : orderList) {
+				orderLst.add(Hasher.convertToBytes(order));
 			}
 			
 			ArrayList<byte[]> hashes = tranxHashLst( orderLst );
@@ -110,9 +110,11 @@ public class Block implements Serializable {
 				byte[] left = orders.get(i);
 				i++;
 				
-				byte[] right = null;
-				if( i != orders.size() ) right = orders.get(i);
-				
+				byte[] right = {};
+				if( i != orders.size() ) {
+					right = orders.get(i);
+				}
+					
 				byte[] hash = new byte[left.length + right.length];
 				System.arraycopy(left, 0, hash, 0, left.length);
 				System.arraycopy(right, 0, hash, left.length, right.length);

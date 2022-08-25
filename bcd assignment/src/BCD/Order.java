@@ -1,22 +1,26 @@
 package BCD;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import blockchain.Hasher;
 
-public class Order {
+public class Order implements Serializable {
+	
+	private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
 
-	private static final String file = "src/trnxpool.txt";
+	private static final String file = "trnxpool.txt";
 	private String orderID;
 	private String userContact;
 	private String userAddress;
@@ -91,15 +95,22 @@ public class Order {
         }
     }
 	
-	//retrieve orderList
-	public static List<Order> getOrderList() {
-		try (FileInputStream fis = new FileInputStream(file);
-                ObjectInputStream in = new ObjectInputStream(fis)) {
-            return (List<Order>) in.readObject();
-        } catch (Exception e) {
+	public static List<String> getAll(){
+        try {
+            return Files.readAllLines(Paths.get(file)).stream().collect(Collectors.toList());
+        } catch (IOException ex) {
             return null;
         }
-	}
+    }
+	
+	//retrieve orderList
+	public static List<Order> getOrderList(){
+        List<String> trnxLst = Order.getAll();
+        return trnxLst.stream()
+                .map( record -> record.split("\\|") )
+                .map(arr -> new Order( arr[0], arr[1], arr[2], getMedList(arr[3]), Double.parseDouble(arr[4]), LocalDateTime.parse(arr[5], FORMATTER)))
+                .collect(Collectors.toList());
+    }
 	
 	public static List<List<String>> readOrders(){
         List<Order> allOrders = getOrderList();
@@ -152,9 +163,17 @@ public class Order {
 		return orderstring;
 	}
 	
-	@Override
-    public String toString() {
-        return "Transaction{" + "orderItem=" + orderID + ", orderDt=" + userContact + ", payment=" + userAddress + ", email=" + orderItem + ", deliveryAddr=" + paymentAmount + ", status=" + orderTime + '}';
-    }
+	public static List<Medicine> getMedList(String str) {
+		List<Medicine> mL = new ArrayList<>();
+		String var = str.substring(1, str.length() - 2);
+		String[] array = var.split("\\,",-1); 
+		
+		for (String s : array) {
+			String[] arrays = s.split("\\$",-1); 
+			Medicine med = new Medicine(Integer.parseInt(arrays[0]), arrays[1], Double.parseDouble(arrays[2]));
+			mL.add(med);
+			}	
+		return mL;
+	}
 	
 }

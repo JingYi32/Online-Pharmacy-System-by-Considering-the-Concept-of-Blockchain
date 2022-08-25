@@ -12,7 +12,7 @@ import java.util.LinkedList;
 
 public class ReadWriteBlockchain {
 	
-	private static final String CHAIN_OBJ = "src/chainobj.dat";
+	private static final String CHAIN_OBJ = "chainobj.dat";
 
 	//insert block into blockchain
 	public static void insert(LinkedList<Block> bc) {
@@ -37,7 +37,7 @@ public class ReadWriteBlockchain {
     //display blockchain info (bytes)
     public static void distribute( String temp ){
         try {
-            Files.write(Paths.get("src/bc.txt"), temp.getBytes(), StandardOpenOption.CREATE);
+            Files.write(Paths.get("bc.txt"), temp.getBytes(), StandardOpenOption.CREATE);
         } catch (IOException ex) {
             
         }

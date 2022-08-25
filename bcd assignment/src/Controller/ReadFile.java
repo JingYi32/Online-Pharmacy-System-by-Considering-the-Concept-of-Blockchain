@@ -44,7 +44,7 @@ public class ReadFile {
             	 List<Medicine> productLst = new ArrayList<>();
             	 while((line = bufReader.readLine()) != null) {
             		 String[] contents = line.split("\\|");
-            		 Medicine m = new Medicine();
+            		 Medicine m = new Medicine(Integer.parseInt(contents[0]),contents[1],Double.parseDouble(contents[2]));
         			 m.setID(Integer.parseInt(contents[0]));
         			 m.setName(contents[1]);
         			 m.setPrice(Double.parseDouble(contents[2]));
