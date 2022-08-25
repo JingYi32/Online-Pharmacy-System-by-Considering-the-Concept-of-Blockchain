@@ -24,12 +24,12 @@ public class Order {
 	private double paymentAmount;
 	private LocalDateTime orderTime;
 	
-	public Order(String orderID, String userContact, String userAddress, double paymentAmount,
+	public Order(String orderID, String userContact, String userAddress, List<Medicine> orderItem, double paymentAmount,
 			LocalDateTime orderTime) {
 		this.orderID = orderID;
 		this.userContact = userContact;
 		this.userAddress = userAddress;
-		//this.orderItem = orderItem;
+		this.orderItem = orderItem;
 		this.paymentAmount = paymentAmount;
 		this.orderTime = orderTime;
 	}
@@ -110,7 +110,7 @@ public class Order {
             hashLst.add( Hasher.newhash(od.getOrderID(), "SHA-256") );
             hashLst.add( Hasher.newhash(od.getUserContact().toString(), "SHA-256") );
             hashLst.add( Hasher.newhash(od.getUserAddress(), "SHA-256") );
-            hashLst.add( Hasher.newhash(od.getOrderItem(), "SHA-256") );
+            hashLst.add( Hasher.newhash(OrderItemString(od.getOrderItem()), "SHA-256") );
             hashLst.add( Hasher.newhash(Double.toString(od.getPaymentAmount()), "SHA-256") );
             hashLst.add( Hasher.newhash(od.getOrderTime().toString(), "SHA-256") );
             hashedOrders.add(hashLst);
@@ -126,6 +126,14 @@ public class Order {
             ex.printStackTrace();
         }
     }
-
+	
+	private static String OrderItemString(List<Medicine> order) {
+		String orderstring = null;
+		for (Medicine o : order) {
+			orderstring += String.join("|", Integer.toString(o.getID()), o.getName(), Double.toString(o.getPrice()))+"$";
+		}
+		
+		return orderstring;
+	}
 	
 }

@@ -2,7 +2,7 @@ package BCD;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import Controller.ReadFile;
+import Controller.*;
 
 public class ProductPage {
 	private static final DecimalFormat df = new DecimalFormat("0.00");
@@ -19,6 +19,6 @@ public class ProductPage {
 					"Product ID\t: " + m.getID() + 
 					"\nProduct Name\t: " + m.getName() +
 					"\nProduct Price\t: RM " + df.format(m.getPrice()) + "\n"));
-		
+		new ProductController().acceptOrder(null);
 	}
 }
