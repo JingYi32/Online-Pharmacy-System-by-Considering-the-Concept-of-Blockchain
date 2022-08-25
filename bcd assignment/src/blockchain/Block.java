@@ -4,8 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
+import BCD.Order;
 
 public class Block implements Serializable {
 	
@@ -13,12 +16,14 @@ public class Block implements Serializable {
 	private String currentHash, previousHash;
 	private long timestamp;
     private String merkleRoot;
+    private List<Order> orderList;
+    private List<List<String>> odList;
     
-	public Block(List<List<String>> odList, String previousHash) {
+	public Block(List<Order> orderList, String previousHash) {
 		this.previousHash = previousHash;
 		this.timestamp = Calendar.getInstance().getTimeInMillis();
 		this.currentHash = this.blockHashCode(genByteArr(odList), previousHash, timestamp);
-		this.merkleRoot = merkleRoot;
+		this.merkleRoot = buildMerkleRoot(orderList);
 	}
 	
 		public int getIndex() {
@@ -52,6 +57,11 @@ public class Block implements Serializable {
 	        
 	    }
 		
+		//hashed orders
+		public List<List<String>> getHashedOrders(List<Order> orderList){
+	        return odList = Order.hashOrders();
+		}
+		
 		//order list to bytes
 		private static byte[] genByteArr(List<List<String>> odList) {
 	        ByteArrayOutputStream boas = new ByteArrayOutputStream();
@@ -70,4 +80,40 @@ public class Block implements Serializable {
 	            return null;
 	        }
 	    }
+		
+		public String buildMerkleRoot(List<Order> orderList) {	
+			ArrayList<byte[]> orderLst = new ArrayList<>();
+			
+			for (Order order : this.orderList) {
+				orderLst.add(Hasher.getBytes(order));
+			}
+			
+			ArrayList<byte[]> hashes = tranxHashLst( orderLst );
+			while(  hashes.size() != 1 ) {
+				hashes = tranxHashLst( hashes );
+			}	
+			return hashes.get(0).toString();
+		}
+		
+		private ArrayList<byte[]> tranxHashLst(ArrayList<byte[]> orders) {
+			ArrayList<byte[]> hashLst = new ArrayList<byte[]>();
+			int i = 0;
+			while( i < orders.size() ) {
+				
+				byte[] left = orders.get(i);
+				i++;
+				
+				byte[] right = null;
+				if( i != orders.size() ) right = orders.get(i);
+				
+				byte[] hash = new byte[left.length + right.length];
+				System.arraycopy(left, 0, hash, 0, left.length);
+				System.arraycopy(right, 0, hash, left.length, right.length);
+				
+				byte[] hashed = Hasher.newhash(hash, "SHA-256");
+				hashLst.add(hashed);
+				i++;
+			}
+			return hashLst;
+		}
 }

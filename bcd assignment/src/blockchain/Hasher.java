@@ -1,9 +1,15 @@
 package blockchain;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+
+import BCD.Order;
 
 public class Hasher {
 	
@@ -21,6 +27,35 @@ public class Hasher {
             return null;
         }
     }
+	
+	public static byte[] newhash(byte[] in, String algorithm) {
+        try {
+            MessageDigest md = MessageDigest.getInstance(algorithm);
+            byte[] bytes = md.digest(in);
+            return bytes;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+	
+	public static byte[] getBytes(Order o) {
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutput out = null;
+            if(o != null) {
+            	 try {
+            		 out = new ObjectOutputStream(bos);
+            		 out.writeObject(o);
+            		 out.flush();
+            	 } catch (Exception e) {
+            		 System.out.println(e.getMessage());
+            		 return null;
+            	 } 
+            	 return bos.toByteArray();
+            } else { 
+            	return null;
+            }  
+        }
 
     public static String hash(byte[] block, String algorithm) {
         try {
