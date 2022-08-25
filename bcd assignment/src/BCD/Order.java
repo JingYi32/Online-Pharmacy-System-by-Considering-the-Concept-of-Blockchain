@@ -146,9 +146,8 @@ public class Order {
 	private static String OrderItemString(List<Medicine> order) {
 		String orderstring = null;
 		for (Medicine o : order) {
-			orderstring += String.join("|", Integer.toString(o.getID()), o.getName(), Double.toString(o.getPrice()))+"$";
+			orderstring += String.join("$", Integer.toString(o.getID()), o.getName(), Double.toString(o.getPrice()))+"|";
 		}
-		
 		return orderstring;
 	}
 	
