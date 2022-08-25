@@ -8,7 +8,7 @@ import BCD.*;
 
 public class ProductController {
 	
-	public void acceptOrder(List<Medicine> orderItem) {
+	public void acceptOrder(List<Medicine> orderItem) throws Exception {
 		if (orderItem == null) {
 			orderItem = new ArrayList<Medicine>();
 		}

@@ -16,6 +16,7 @@ public class Signin {
 		System.out.println("-- Signin Page --");
 		System.out.println("Enter username: ");
 		String username = sc.next();
+		App.user = username;
 		List<String> usrLst = ReadFile.read( "login.txt" );
 		if (usrLst != null) {
 			boolean i = usrLst.stream().anyMatch(elem -> elem.startsWith(username));
@@ -25,9 +26,9 @@ public class Signin {
 		}
 		System.out.println("Enter password: ");
 		String pwd = sc.next();
-		sc.close();
 		new SigninController();
-		String uuid = SigninController.create(username, pwd);
-		KeyGen.create(uuid);
+		SigninController.create(username, pwd);
+		KeyGen.create(username);
+		ProductPage.product();
 	}
 }

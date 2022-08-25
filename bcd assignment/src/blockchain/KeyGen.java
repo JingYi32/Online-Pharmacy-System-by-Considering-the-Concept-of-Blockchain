@@ -32,8 +32,8 @@ public class KeyGen {
 		PublicKey pubKey = myKeyMaker.keyPair.getPublic();
 		PrivateKey prvKey = myKeyMaker.keyPair.getPrivate();
 		
-		put( pubKey.getEncoded(), "KeyPair/PublicKey|"+uuid );
-		put( prvKey.getEncoded(), "KeyPair/PrivateKey|"+uuid );
+		put( pubKey.getEncoded(), "KeyPair/PublicKey-"+uuid );
+		put( prvKey.getEncoded(), "KeyPair/PrivateKey-"+uuid );
 		
 	}
 	

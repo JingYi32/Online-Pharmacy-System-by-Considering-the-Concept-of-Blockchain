@@ -1,6 +1,6 @@
 package Controller;
 
-public class Admin {
+public class AdminController {
 	public static void admin() {
 		
 	}

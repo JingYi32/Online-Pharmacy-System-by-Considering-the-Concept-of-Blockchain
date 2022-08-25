@@ -6,7 +6,7 @@ import Controller.*;
 
 public class ProductPage {
 	private static final DecimalFormat df = new DecimalFormat("0.00");
-	public static void product() {
+	public static void product() throws Exception {
 		System.out.println();
 		System.out.println();
 		System.out.println("==================================================");

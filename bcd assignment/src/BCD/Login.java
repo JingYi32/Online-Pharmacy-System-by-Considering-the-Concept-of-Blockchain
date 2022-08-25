@@ -5,7 +5,7 @@ import java.util.Scanner;
 import Controller.LoginController;
 
 public class Login {
-	public void Login() {
+	public void Login() throws Exception {
 		Scanner sc = new Scanner(System.in);
 		System.out.println();
 		System.out.println();
@@ -14,6 +14,7 @@ public class Login {
 		System.out.println();
 		System.out.println("Enter username: ");
 		String username = sc.next();
+		App.user = username;
 		System.out.println("Enter password: ");
 		String pwd = sc.next();
 		boolean v = new LoginController().verify(username, pwd);

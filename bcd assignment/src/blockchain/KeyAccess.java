@@ -12,11 +12,11 @@ import java.util.Base64;
 
 import javax.crypto.Cipher;
 
-public class AsymmetricKeyPair {
+public class KeyAccess {
 	
 	protected Cipher cipher;
 
-	public AsymmetricKeyPair(String param) {
+	public KeyAccess(String param) {
 		try {
 			cipher = Cipher.getInstance( param );
 		} catch (Exception e) {

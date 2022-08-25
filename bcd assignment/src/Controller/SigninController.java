@@ -15,11 +15,10 @@ public class SigninController {
         
     }
     
-    public static String create( String username, String passwd ) throws Exception{
+    public static void create( String username, String passwd ) throws Exception{
         String rand = Base64.getEncoder().encodeToString( Hasher.getSalt() );
         String hash = Hasher.newhash( Txt.append(rand, passwd),"MD5" );
         ReadFile.write(FILE, String.join("|", uuid, rand, hash));
         ReadFile.write(FILE_LOGIN, String.join("|", username, uuid));
-        return uuid;
    }
 }

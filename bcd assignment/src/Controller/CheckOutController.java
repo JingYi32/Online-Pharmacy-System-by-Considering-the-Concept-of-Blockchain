@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import BCD.*;
+import blockchain.KeyAccess;
 
 public class CheckOutController {
     private String contact;
@@ -14,7 +15,7 @@ public class CheckOutController {
     	orderID = UUID.randomUUID().toString();        
     }
 	
-	public void CreateOrder(List<Medicine> orderItem) {
+	public void CreateOrder(List<Medicine> orderItem) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		System.out.println();
 		System.out.println("==================================================");
@@ -28,7 +29,10 @@ public class CheckOutController {
 		Order o = new Order(orderID, contact, address, orderItem, price ,LocalDateTime.now());
 		Order.insert(o);
 		System.out.println(Order.OrderItemString(orderItem));
-		String text = orderID + "|" + contact + "|" + address + "|" + Order.OrderItemString(orderItem) + "|" + price +  "|" + LocalDateTime.now();
-		ReadFile.write("trnxpool.txt", text);
+		ReadFile.write("trnxpool.txt", String.join("|",orderID,contact,address,Order.OrderItemString(orderItem), Double.toString(price) ,LocalDateTime.now().toString()));
+		SignatureController sig = new SignatureController();
+		String data = new SignatureController().SignData(o);
+		String signature = sig.sign(data, KeyAccess.getPrivateKey("KeyPair/PublicKey-"+App.user.toString()));
+		ReadFile.write(String.join("|", App.user, signature), "signature.txt");
 	}
 }

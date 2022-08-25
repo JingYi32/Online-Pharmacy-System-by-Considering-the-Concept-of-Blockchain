@@ -9,7 +9,7 @@ import Controller.CheckOutController;
 
 public class CheckOut {
 	private static final DecimalFormat df = new DecimalFormat("0.00");
-	public CheckOut(List<Medicine> orderItem) {
+	public CheckOut(List<Medicine> orderItem) throws Exception {
 		Scanner sc = new Scanner(System.in);
 		System.out.println();
 		System.out.println("==================================================");
