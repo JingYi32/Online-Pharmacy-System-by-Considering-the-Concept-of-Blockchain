@@ -26,6 +26,6 @@ public class Login {
 		}
 		System.out.println("Login Successfully");
 		sc.close();
-		Product.product();
+		ProductPage.product();
 	}
 }

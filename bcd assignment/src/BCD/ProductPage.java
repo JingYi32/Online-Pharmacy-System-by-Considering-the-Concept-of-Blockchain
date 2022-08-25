@@ -4,7 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import Controller.ReadFile;
 
-public class Product {
+public class ProductPage {
 	private static final DecimalFormat df = new DecimalFormat("0.00");
 	public static void product() {
 		System.out.println();
@@ -20,6 +20,5 @@ public class Product {
 					"\nProduct Name\t: " + m.getName() +
 					"\nProduct Price\t: RM " + df.format(m.getPrice()) + "\n"));
 		
-		System.out.println("Kindly enter the product ID that wish to purchase:");
 	}
 }

@@ -20,7 +20,7 @@ public class Order {
 	private String orderID;
 	private String userContact;
 	private String userAddress;
-	//private List<Product> orderItem;
+	private List<Medicine> orderItem;
 	private double paymentAmount;
 	private LocalDateTime orderTime;
 	
@@ -58,13 +58,13 @@ public class Order {
 		this.userAddress = userAddress;
 	}
 
-//	public List<Product> getOrderItem() {
-//		return orderItem;
-//	}
-//
-//	public void setOrderItem(List<Product> orderItem) {
-//		this.orderItem = orderItem;
-//	}
+	public List<Medicine> getOrderItem() {
+		return orderItem;
+	}
+
+	public void setOrderItem(List<Medicine> orderItem) {
+		this.orderItem = orderItem;
+	}
 
 	public double getPaymentAmount() {
 		return paymentAmount;
@@ -110,7 +110,7 @@ public class Order {
             hashLst.add( Hasher.newhash(od.getOrderID(), "SHA-256") );
             hashLst.add( Hasher.newhash(od.getUserContact().toString(), "SHA-256") );
             hashLst.add( Hasher.newhash(od.getUserAddress(), "SHA-256") );
-            //hashLst.add( Hasher.newhash(od.getOrderItem(), "SHA-256") );
+            hashLst.add( Hasher.newhash(od.getOrderItem(), "SHA-256") );
             hashLst.add( Hasher.newhash(Double.toString(od.getPaymentAmount()), "SHA-256") );
             hashLst.add( Hasher.newhash(od.getOrderTime().toString(), "SHA-256") );
             hashedOrders.add(hashLst);
