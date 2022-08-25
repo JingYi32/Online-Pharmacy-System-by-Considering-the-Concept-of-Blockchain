@@ -64,7 +64,7 @@ public class Block implements Serializable {
 	        
 	    }
 		
-		//hashed orders
+		//get all orders
 		public List<List<String>> getOrders(List<Order> orderList){
 	        return data = Order.readOrders();
 		}
