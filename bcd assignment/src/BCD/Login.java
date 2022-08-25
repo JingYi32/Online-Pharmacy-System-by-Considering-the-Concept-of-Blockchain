@@ -25,7 +25,6 @@ public class Login {
 			v = new LoginController().verify(username, pwd);
 		}
 		System.out.println("Login Successfully");
-		sc.close();
 		ProductPage.product();
 	}
 }

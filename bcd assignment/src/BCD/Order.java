@@ -143,11 +143,12 @@ public class Order {
         }
     }
 	
-	private static String OrderItemString(List<Medicine> order) {
-		String orderstring = null;
+	public static String OrderItemString(List<Medicine> order) {
+		String orderstring = "[";
 		for (Medicine o : order) {
-			orderstring += String.join("$", Integer.toString(o.getID()), o.getName(), Double.toString(o.getPrice()))+"|";
+			orderstring += String.join("$", Integer.toString(o.getID()), o.getName(), Double.toString(o.getPrice()))+",";
 		}
+		orderstring += "]";
 		return orderstring;
 	}
 	

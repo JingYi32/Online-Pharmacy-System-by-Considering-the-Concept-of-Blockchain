@@ -8,11 +8,10 @@ import BCD.*;
 public class CheckOutController {
     private String contact;
     private String address;
+    private double price;
     private static String orderID;
     static{
-    	orderID = UUID.randomUUID().toString();
-        System.out.println( orderID );
-        
+    	orderID = UUID.randomUUID().toString();        
     }
 	
 	public void CreateOrder(List<Medicine> orderItem) {
@@ -23,9 +22,12 @@ public class CheckOutController {
 		System.out.println("Contact\t: ");
 		contact = sc.next();
 		System.out.println("Address\t: ");
-		address = sc.next();
-		Order o = new Order(orderID, contact, address, orderItem, orderItem.stream().mapToDouble(i -> i.getPrice()).sum() ,LocalDateTime.now());
+		address = sc.nextLine();
+		price = orderItem.stream().mapToDouble(i -> i.getPrice()).sum();
+		Order o = new Order(orderID, contact, address, orderItem, price ,LocalDateTime.now());
 		Order.insert(o);
+		System.out.println(Order.OrderItemString(orderItem));
+		String text = orderID + "|" + Order.OrderItemString(orderItem) + "|" + price + "|" + contact + "|" + address + "|" + LocalDateTime.now();
+		ReadFile.write("trnxpool.txt", text);
 	}
-	
 }
