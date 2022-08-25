@@ -11,10 +11,14 @@ public class Blockchain {
 
     static LinkedList<Block> bc = new LinkedList<>();
     
-    public static void main(String[] args) {
-//        firstBlock(); //CAN BE EMPTY!
-        nextBlock();
-
+    public static void Blockchain() {
+    	bc = ReadWriteBlockchain.get();
+    	if (bc.equals(null)) {
+    		firstBlock();
+    	}
+    	else {
+    		nextBlock();
+    	}
     }
 
     public static void firstBlock() {
@@ -28,8 +32,8 @@ public class Blockchain {
 //        System.out.println( trnxPool_hashes );
         
         
-        //Block b1 = new Block(trnxPool_hashes, "0"); //genesis block
-        //bc.add(b1);
+//        Block b1 = new Block(trnxPool_hashes, "0"); //genesis block
+//        bc.add(b1);
         //clear the trnxpool.txt
         Order.clearTrnxFile();
         ReadWriteBlockchain.insert(bc);

@@ -101,6 +101,22 @@ public class Order {
         }
 	}
 	
+	public static List<List<String>> readOrders(){
+        List<Order> allOrders = getOrderList();
+        List<List<String>> readOrders = new ArrayList();
+        for (Order od : allOrders) {
+            List<String> hashLst = new ArrayList();
+            hashLst.add( od.getOrderID() );
+            hashLst.add( od.getUserContact() );
+            hashLst.add( od.getUserAddress() );
+            hashLst.add( OrderItemString(od.getOrderItem()) );
+            hashLst.add( Double.toString(od.getPaymentAmount()));
+            hashLst.add( od.getOrderTime().toString() );
+            readOrders.add(hashLst);
+        }
+        return readOrders;
+	}
+	
 	//hash orders
 	public static List<List<String>> hashOrders(){
         List<Order> allOrders = getOrderList();
@@ -135,5 +151,10 @@ public class Order {
 		
 		return orderstring;
 	}
+	
+	@Override
+    public String toString() {
+        return "Transaction{" + "orderItem=" + orderID + ", orderDt=" + userContact + ", payment=" + userAddress + ", email=" + orderItem + ", deliveryAddr=" + paymentAmount + ", status=" + orderTime + '}';
+    }
 	
 }

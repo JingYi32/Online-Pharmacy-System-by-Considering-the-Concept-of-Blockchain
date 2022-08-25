@@ -17,15 +17,22 @@ public class Block implements Serializable {
 	private long timestamp;
     private String merkleRoot;
     private List<Order> orderList;
-    private List<List<String>> odList;
+    private List<List<String>> data;
     
 	public Block(List<Order> orderList, String previousHash) {
 		this.previousHash = previousHash;
+		this.data = getOrders(orderList);
 		this.timestamp = Calendar.getInstance().getTimeInMillis();
-		this.currentHash = this.blockHashCode(genByteArr(odList), previousHash, timestamp);
+		this.currentHash = this.blockHashCode(genByteArr(data), previousHash, timestamp);
 		this.merkleRoot = buildMerkleRoot(orderList);
 	}
 	
+		public List<List<String>> getData() {
+			return data;
+		}
+		public void setData(List<List<String>> data) {
+			this.data = data;
+		}
 		public int getIndex() {
 			return index;
 		}
@@ -58,8 +65,8 @@ public class Block implements Serializable {
 	    }
 		
 		//hashed orders
-		public List<List<String>> getHashedOrders(List<Order> orderList){
-	        return odList = Order.hashOrders();
+		public List<List<String>> getOrders(List<Order> orderList){
+	        return data = Order.readOrders();
 		}
 		
 		//order list to bytes

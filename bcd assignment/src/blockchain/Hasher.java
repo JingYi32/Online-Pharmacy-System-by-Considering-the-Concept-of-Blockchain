@@ -1,15 +1,12 @@
 package blockchain;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-
-import BCD.Order;
 
 public class Hasher {
 	
@@ -28,6 +25,7 @@ public class Hasher {
         }
     }
 	
+	//merkle root
 	public static byte[] newhash(byte[] in, String algorithm) {
         try {
             MessageDigest md = MessageDigest.getInstance(algorithm);
@@ -39,7 +37,8 @@ public class Hasher {
         }
     }
 	
-	public static byte[] getBytes(Order o) {
+	//merkle root
+	public static byte[] getBytes(Object o) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutput out = null;
             if(o != null) {
