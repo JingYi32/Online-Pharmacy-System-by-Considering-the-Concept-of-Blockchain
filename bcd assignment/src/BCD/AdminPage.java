@@ -45,15 +45,17 @@ public class AdminPage {
 		List<Order> x = new ArrayList<Order>();
 		for (String d : m) {
 			String[] f = d.split("\\|");
-			x.add(new Order(
-					f[0],
-					f[1],
-					f[2],
-					splitString(f[3]),
-					Double.parseDouble(f[4]),
-					LocalDateTime.parse(f[5]),
-					f[6],
-					f[7]));
+			if (!f[8].equals("Complete")) {
+				x.add(new Order(
+						f[0],
+						f[1],
+						f[2],
+						splitString(f[3]),
+						Double.parseDouble(f[4]),
+						LocalDateTime.parse(f[5]),
+						f[6],
+						f[7]));
+			}
 		}
 		x.stream().forEach(r -> System.out.println(
 				(x.indexOf(r)+1) + "." +
@@ -68,6 +70,7 @@ public class AdminPage {
 		if(v) {
 			System.out.print("Valid!");
 			Blockchain b = new Blockchain();
+			System.out.print("Done!");
 		} else {
 			System.out.print("Invalid!");
 		}

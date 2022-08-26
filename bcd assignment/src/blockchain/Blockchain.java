@@ -12,8 +12,9 @@ public class Blockchain {
     public static final int SIZE = 10;
     
     public Blockchain() throws IOException {
-        bc = ReadWriteBlockchain.get();
-        if (bc.equals(null)) {
+    	bc = ReadWriteBlockchain.get();
+        if (bc == null) {
+        	
             LinkedList<Block> bch = new LinkedList<>();
             firstBlock(bch);
         }

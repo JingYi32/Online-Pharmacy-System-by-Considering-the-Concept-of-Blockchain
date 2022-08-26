@@ -41,7 +41,7 @@ public class CheckOutController {
 		String signature = sig.sign(Double.toString(price), p);
 		Order o = new Order(orderID, contact, address, orderItem, price ,LocalDateTime.now(), signature,App.user);
 		Order.insert(o);
-		String d = o.getOrderID() + "|" + o.getUserContact() + "|" + o.getUserAddress() + "|" + Order.OrderItemString(o.getOrderItem()) + "|" + Double.toString(o.getPaymentAmount()) + "|" + o.getOrderTime().toString() + "|" + signature + "|" + App.user;
+		String d = o.getOrderID() + "|" + o.getUserContact() + "|" + o.getUserAddress() + "|" + Order.OrderItemString(o.getOrderItem()) + "|" + Double.toString(o.getPaymentAmount()) + "|" + o.getOrderTime().toString() + "|" + signature + "|" + App.user + "|haven't verified";
 		writepool("trnxpool.txt", d);
 		System.out.println("Done");
 	}
