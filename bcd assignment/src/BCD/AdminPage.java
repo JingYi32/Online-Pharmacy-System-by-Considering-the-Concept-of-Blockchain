@@ -66,6 +66,7 @@ public class AdminPage {
 		Order o = x.stream().filter(s -> x.get(Integer.parseInt(opt)-1).getOrderID() == s.getOrderID()).findAny().orElse(null);
 		boolean v = sig.verify(Double.toString(o.getPaymentAmount()), o.getSignature(), KeyAccess.getPublicKey("KeyPair/PublicKey"+o.getUsername()));
 		if(v) {
+			System.out.print("Valid!");
 			Blockchain b = new Blockchain();
 		} else {
 			System.out.print("Invalid!");
@@ -76,7 +77,7 @@ public class AdminPage {
 		List<Medicine> mlist = new ArrayList<Medicine>();
 		String[] b = removeFirstandLast(a).split(",");
 		for (String c : b) {
-			String[] d = c.split("@");
+			String[] d = c.split("\\$",-1);
 			mlist.add(new Medicine(Integer.parseInt(d[0]), d[1], Double.parseDouble(d[2])));
 		}
 		return mlist;
@@ -84,6 +85,7 @@ public class AdminPage {
 	
     public static String removeFirstandLast(String str)
     {
+    	
         str = str.replace("[", "");
         str = str.replace("]", "");
         return str;

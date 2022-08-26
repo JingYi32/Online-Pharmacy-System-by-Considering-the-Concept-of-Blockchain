@@ -12,13 +12,14 @@ public class Blockchain {
     public static final int SIZE = 10;
     
     public Blockchain() throws IOException {
-    	bc = ReadWriteBlockchain.get();
-    	if (bc.equals(null)) {
-    		firstBlock(bc);
-    	}
-    	else {
-    		nextBlock();
-    	}
+        bc = ReadWriteBlockchain.get();
+        if (bc.equals(null)) {
+            LinkedList<Block> bch = new LinkedList<>();
+            firstBlock(bch);
+        }
+        else {
+            nextBlock();
+        }
     }
 
     //create genesis block

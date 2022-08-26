@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.PrivateKey;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -45,11 +47,10 @@ public class CheckOutController {
 	}
 	
 	private void writepool(String fileName, String data) throws IOException {
+    		BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+    		writer.write(data);
+    		writer.close();        
+    	
 
-		BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
-		writer.write(data);
-		writer.close();
-
-		
 	}
 }
