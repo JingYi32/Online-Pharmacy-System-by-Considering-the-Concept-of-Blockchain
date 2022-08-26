@@ -15,7 +15,7 @@ public class LoginController {
         //20487f0d-5c5c-48f2-8928-67a042b4ddad|ja8yYZw98+eqHfFbHx5Ofg==|a45faea0afc0ead2ea8b66325b18cc2f
         String[] secret = credential.get(0).split("\\|");
                 
-        String hash = Hasher.newhash( Txt.append(secret[1], password), "md5" );
+        String hash = Hasher.newHash( Txt.append(secret[1], password), "md5" );
                 
         return hash.equalsIgnoreCase( secret[2] );
     }

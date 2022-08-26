@@ -33,13 +33,4 @@ public class ReadWriteBlockchain {
             return null;
         }
     }
-
-    //display blockchain info (bytes)
-    public static void distribute( String temp ){
-        try {
-            Files.write(Paths.get("bc.txt"), temp.getBytes(), StandardOpenOption.CREATE);
-        } catch (IOException ex) {
-            
-        }
-    }
 }

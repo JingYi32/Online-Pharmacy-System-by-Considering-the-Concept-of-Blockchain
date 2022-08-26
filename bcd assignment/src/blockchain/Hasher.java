@@ -11,7 +11,8 @@ import java.security.SecureRandom;
 
 public class Hasher {
 	
-	public static String newhash(String in, String algorithm) {
+	//hash individual strings
+	public static String newHash(String in, String algorithm) {
         try {
             MessageDigest md = MessageDigest.getInstance(algorithm);
             byte[] bytes = md.digest(in.getBytes("UTF-8"));
@@ -26,8 +27,8 @@ public class Hasher {
         }
     }
 	
-	//merkle root
-	public static byte[] newhash(byte[] in, String algorithm) {
+	//merkle root - hash byte array 
+	public static byte[] newHashByte(byte[] in, String algorithm) {
         try {
             MessageDigest md = MessageDigest.getInstance(algorithm);
             byte[] bytes = md.digest(in);
@@ -38,7 +39,7 @@ public class Hasher {
         }
     }
 	
-	//merkle root
+	//merkle root - hash individual objects
 	public static byte[] convertToBytes(Object object) throws IOException {
 	    try (ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	         ObjectOutputStream out = new ObjectOutputStream(bos)) {
@@ -47,6 +48,7 @@ public class Hasher {
 	    } 
 	}
 
+	//hash byte array
     public static String hash(byte[] block, String algorithm) {
         try {
             MessageDigest md = MessageDigest.getInstance(algorithm);
@@ -63,6 +65,7 @@ public class Hasher {
         }
     }
 
+    //generate salt for hashing
     public static byte[] getSalt() throws NoSuchAlgorithmException {
         SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
         byte[] salt = new byte[16];

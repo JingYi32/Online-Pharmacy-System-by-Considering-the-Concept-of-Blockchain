@@ -16,7 +16,6 @@ public class Block implements Serializable {
 	private String currentHash, previousHash;
 	private long timestamp;
     private String merkleRoot;
-    private List<Order> orderList;
     private List<List<String>> data;
     
 	public Block(List<List<String>> data, String previousHash) throws IOException {
@@ -26,9 +25,15 @@ public class Block implements Serializable {
 		this.currentHash = this.blockHashCode(genByteArr(data), previousHash, timestamp);
 		this.merkleRoot = buildMerkleRoot(Order.getOrderList());
 	}
-	//this.data = getOrders(orderList);
+
 		public List<List<String>> getData() {
 			return data;
+		}
+		public String getMerkleRoot() {
+			return merkleRoot;
+		}
+		public void setMerkleRoot(String merkleRoot) {
+			this.merkleRoot = merkleRoot;
 		}
 		public void setData(List<List<String>> data) {
 			this.data = data;
@@ -58,18 +63,12 @@ public class Block implements Serializable {
 			this.timestamp = timestamp;
 		}
 		
-		//block to bytes
+		//current block hash
 		public String blockHashCode(byte[] data, String previousHash, long timestamp) {
-	        return Hasher.newhash(data + previousHash + timestamp, "SHA-256");    
+	        return Hasher.newHash(data + previousHash + timestamp, "SHA-256");    
 	    }
 		
-		//get all orders
-		public List<List<String>> getOrders(List<Order> orderList){
-	        data = Order.readOrders();
-			return data;
-		}
-		
-		//order list to bytes
+		//hashed order list to bytes
 		private static byte[] genByteArr(List<List<String>> odList) {
 	        ByteArrayOutputStream boas = new ByteArrayOutputStream();
 	        ObjectOutputStream out;
@@ -88,6 +87,7 @@ public class Block implements Serializable {
 	        }
 	    }
 		
+		//generate merkle root
 		public String buildMerkleRoot(List<Order> orderList) throws IOException {	
 			ArrayList<byte[]> orderLst = new ArrayList<>();
 
@@ -102,6 +102,7 @@ public class Block implements Serializable {
 			return hashes.get(0).toString();
 		}
 		
+		//generate merkle root
 		private ArrayList<byte[]> tranxHashLst(ArrayList<byte[]> orders) {
 			ArrayList<byte[]> hashLst = new ArrayList<byte[]>();
 			int i = 0;
@@ -119,7 +120,7 @@ public class Block implements Serializable {
 				System.arraycopy(left, 0, hash, 0, left.length);
 				System.arraycopy(right, 0, hash, left.length, right.length);
 				
-				byte[] hashed = Hasher.newhash(hash, "SHA-256");
+				byte[] hashed = Hasher.newHashByte(hash, "SHA-256");
 				hashLst.add(hashed);
 				i++;
 			}

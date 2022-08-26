@@ -95,6 +95,7 @@ public class Order implements Serializable {
         }
     }
 	
+	//get order list from file
 	public static List<String> getAll(){
         try {
             return Files.readAllLines(Paths.get(file)).stream().collect(Collectors.toList());
@@ -103,49 +104,33 @@ public class Order implements Serializable {
         }
     }
 	
-	//retrieve orderList
+	//retrieve order object List
 	public static List<Order> getOrderList(){
-        List<String> trnxLst = Order.getAll();
+        List<String> trnxLst = getAll();
         return trnxLst.stream()
                 .map( record -> record.split("\\|") )
                 .map(arr -> new Order( arr[0], arr[1], arr[2], getMedList(arr[3]), Double.parseDouble(arr[4]), LocalDateTime.parse(arr[5], FORMATTER)))
                 .collect(Collectors.toList());
     }
-	
-	public static List<List<String>> readOrders(){
-        List<Order> allOrders = getOrderList();
-        List<List<String>> readOrders = new ArrayList();
-        for (Order od : allOrders) {
-            List<String> hashLst = new ArrayList();
-            hashLst.add( od.getOrderID() );
-            hashLst.add( od.getUserContact() );
-            hashLst.add( od.getUserAddress() );
-            hashLst.add( OrderItemString(od.getOrderItem()) );
-            hashLst.add( Double.toString(od.getPaymentAmount()));
-            hashLst.add( od.getOrderTime().toString() );
-            readOrders.add(hashLst);
-        }
-        return readOrders;
-	}
-	
+		
 	//hash orders
 	public static List<List<String>> hashOrders(){
         List<Order> allOrders = getOrderList();
         List<List<String>> hashedOrders = new ArrayList();
         for (Order od : allOrders) {
             List<String> hashLst = new ArrayList();
-            hashLst.add( Hasher.newhash(od.getOrderID(), "SHA-256") );
-            hashLst.add( Hasher.newhash(od.getUserContact().toString(), "SHA-256") );
-            hashLst.add( Hasher.newhash(od.getUserAddress(), "SHA-256") );
-            hashLst.add( Hasher.newhash(OrderItemString(od.getOrderItem()), "SHA-256") );
-            hashLst.add( Hasher.newhash(Double.toString(od.getPaymentAmount()), "SHA-256") );
-            hashLst.add( Hasher.newhash(od.getOrderTime().toString(), "SHA-256") );
+            hashLst.add( Hasher.newHash(od.getOrderID(), "SHA-256") );
+            hashLst.add( Hasher.newHash(od.getUserContact().toString(), "SHA-256") );
+            hashLst.add( Hasher.newHash(od.getUserAddress(), "SHA-256") );
+            hashLst.add( Hasher.newHash(OrderItemString(od.getOrderItem()), "SHA-256") );
+            hashLst.add( Hasher.newHash(Double.toString(od.getPaymentAmount()), "SHA-256") );
+            hashLst.add( Hasher.newHash(od.getOrderTime().toString(), "SHA-256") );
             hashedOrders.add(hashLst);
         }
         return hashedOrders;
 	}
 	
-	//empty file after putting into block
+	//empty file after transferring into block
 	public static void clearTrnxFile(){
         try {
             FileChannel.open(Paths.get(file), StandardOpenOption.WRITE).truncate(0).close();
@@ -154,6 +139,7 @@ public class Order implements Serializable {
         }
     }
 	
+	//convert medicine list to string
 	public static String OrderItemString(List<Medicine> order) {
 		String orderstring = "[";
 		for (Medicine o : order) {
@@ -163,6 +149,7 @@ public class Order implements Serializable {
 		return orderstring;
 	}
 	
+	//convert string to medicine list
 	public static List<Medicine> getMedList(String str) {
 		List<Medicine> mL = new ArrayList<>();
 		String var = str.substring(1, str.length() - 2);
