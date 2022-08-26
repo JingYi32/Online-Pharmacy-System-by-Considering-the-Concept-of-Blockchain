@@ -27,17 +27,6 @@ public class SignatureController {
 			e.printStackTrace();
 		}
 	}
-	
-	public String SignData(Order o) {
-		String hashID = Hasher.newhash(o.getOrderID(), "MD5");
-		String hashContact = Hasher.newhash(o.getUserContact().toString(), "MD5");
-		String hashAddress = Hasher.newhash(o.getUserAddress(), "MD5");
-		String hashItem = Hasher.newhash(Order.OrderItemString(o.getOrderItem()), "MD5");
-		String hashAmount = Hasher.newhash(Double.toString(o.getPaymentAmount()), "MD5");
-		String hashTime = Hasher.newhash(o.getOrderTime().toString(), "MD5");
-		
-		return hashID+hashContact+hashAddress+hashItem+hashAmount+hashTime;
-	}
 
 	public String sign(String data, PrivateKey priKey) throws Exception
 	{
@@ -46,9 +35,9 @@ public class SignatureController {
 		return Base64.getEncoder().encodeToString(sig.sign());
 	}
 	
-	public boolean verify(String data, String signature) throws Exception
+	public boolean verify(String data, String signature, PublicKey pucKey) throws Exception
 	{
-		sig.initVerify(keyPair.getPublic());
+		sig.initVerify(pucKey);
 		sig.update(data.getBytes());
 		return sig.verify( Base64.getDecoder().decode(signature));
 	}

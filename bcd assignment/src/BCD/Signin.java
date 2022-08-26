@@ -28,7 +28,6 @@ public class Signin {
 		String pwd = sc.next();
 		new SigninController();
 		SigninController.create(username, pwd);
-		KeyGen.create(username);
 		ProductPage.product();
 	}
 }

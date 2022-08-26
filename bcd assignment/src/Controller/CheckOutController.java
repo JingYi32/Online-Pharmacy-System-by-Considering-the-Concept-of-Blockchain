@@ -1,10 +1,17 @@
 package Controller;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.security.PrivateKey;
 import java.time.LocalDateTime;
 import java.util.*;
 
 import BCD.*;
 import blockchain.KeyAccess;
+import blockchain.KeyGen;
 
 public class CheckOutController {
     private String contact;
@@ -26,13 +33,23 @@ public class CheckOutController {
 		System.out.println("Address\t: ");
 		address = sc.nextLine();
 		price = orderItem.stream().mapToDouble(i -> i.getPrice()).sum();
-		Order o = new Order(orderID, contact, address, orderItem, price ,LocalDateTime.now());
-		Order.insert(o);
-		System.out.println(Order.OrderItemString(orderItem));
-		ReadFile.write("trnxpool.txt", String.join("|",orderID,contact,address,Order.OrderItemString(orderItem), Double.toString(price) ,LocalDateTime.now().toString()));
 		SignatureController sig = new SignatureController();
-		String data = new SignatureController().SignData(o);
-		String signature = sig.sign(data, KeyAccess.getPrivateKey("KeyPair/PublicKey-"+App.user.toString()));
-		ReadFile.write(String.join("|", App.user, signature), "signature.txt");
+		KeyGen.create(App.user);
+		PrivateKey p = KeyAccess.getPrivateKey("KeyPair/PrivateKey"+App.user);
+		String signature = sig.sign(Double.toString(price), p);
+		Order o = new Order(orderID, contact, address, orderItem, price ,LocalDateTime.now(), signature,App.user);
+		Order.insert(o);
+		String d = o.getOrderID() + "|" + o.getUserContact() + "|" + o.getUserAddress() + "|" + Order.OrderItemString(o.getOrderItem()) + "|" + Double.toString(o.getPaymentAmount()) + "|" + o.getOrderTime().toString() + "|" + signature + "|" + App.user;
+		writepool("trnxpool.txt", d);
+		System.out.println("Done");
+	}
+	
+	private void writepool(String fileName, String data) throws IOException {
+
+		BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+		writer.write(data);
+		writer.close();
+
+		
 	}
 }

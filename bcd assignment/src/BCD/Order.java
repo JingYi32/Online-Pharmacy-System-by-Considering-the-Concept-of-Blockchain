@@ -21,21 +21,25 @@ public class Order implements Serializable {
 	private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ISO_DATE_TIME;
 
 	private static final String file = "trnxpool.txt";
+	private String username;
 	private String orderID;
 	private String userContact;
 	private String userAddress;
 	private List<Medicine> orderItem;
 	private double paymentAmount;
 	private LocalDateTime orderTime;
+	private String signature;
 	
 	public Order(String orderID, String userContact, String userAddress, List<Medicine> orderItem, double paymentAmount,
-			LocalDateTime orderTime) {
+			LocalDateTime orderTime, String signature, String username) {
 		this.orderID = orderID;
 		this.userContact = userContact;
 		this.userAddress = userAddress;
 		this.orderItem = orderItem;
 		this.paymentAmount = paymentAmount;
 		this.orderTime = orderTime;
+		this.signature = signature;
+		this.username = username;
 	}
 
 	public String getOrderID() {
@@ -86,6 +90,14 @@ public class Order implements Serializable {
 		this.orderTime = orderTime;
 	}
 	
+	public String getSignature() {
+		return signature;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
 	//insert new order into order list
 	public static void insert(Order newOrder) {
         try (FileOutputStream fos = new FileOutputStream(file);
@@ -109,7 +121,7 @@ public class Order implements Serializable {
         List<String> trnxLst = getAll();
         return trnxLst.stream()
                 .map( record -> record.split("\\|") )
-                .map(arr -> new Order( arr[0], arr[1], arr[2], getMedList(arr[3]), Double.parseDouble(arr[4]), LocalDateTime.parse(arr[5], FORMATTER)))
+                .map(arr -> new Order( arr[0], arr[1], arr[2], getMedList(arr[3]), Double.parseDouble(arr[4]), LocalDateTime.parse(arr[5], FORMATTER), arr[6], arr[7]))
                 .collect(Collectors.toList());
     }
 		
@@ -125,6 +137,8 @@ public class Order implements Serializable {
             hashLst.add( Hasher.newHash(OrderItemString(od.getOrderItem()), "SHA-256") );
             hashLst.add( Hasher.newHash(Double.toString(od.getPaymentAmount()), "SHA-256") );
             hashLst.add( Hasher.newHash(od.getOrderTime().toString(), "SHA-256") );
+            hashLst.add( Hasher.newHash(od.getSignature(), "SHA-256") );
+            hashLst.add( Hasher.newHash(od.getUsername(), "SHA-256") );
             hashedOrders.add(hashLst);
         }
         return hashedOrders;

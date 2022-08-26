@@ -3,41 +3,43 @@ package BCD;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import Controller.*;
+import blockchain.Blockchain;
 
 public class App {
 	public static String user;
 	
 	public static void main(String[] args) throws Exception{
-		try {
-			switch(WelcomeController.getInput(WelcomeController.roleSelection())) {
-			case 1:
-				try {
-					switch(verity(LoginOrSignin())) {
-					case 1:
-						try {
-							new Signin();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						break;
-					case 2:
-						new Login().Login();
-						break;
-					}
-					break;
-				}
-				catch(InputMismatchException e) {
-					System.out.println("Wrong Input!");
-					verity(LoginOrSignin());
-				}
-			case 2:
-				AdminController.admin();
-				break;
-			}
-		}catch(InputMismatchException e) {
-			System.out.println("Wrong Input!");
-			WelcomeController.getInput(WelcomeController.roleSelection());
-		}
+		Blockchain b = new Blockchain();
+//		try {
+//			switch(WelcomeController.getInput(WelcomeController.roleSelection())) {
+//			case 1:
+//				try {
+//					switch(verity(LoginOrSignin())) {
+//					case 1:
+//						try {
+//							new Signin();
+//						} catch (Exception e) {
+//							e.printStackTrace();
+//						}
+//						break;
+//					case 2:
+//						new Login().Login();
+//						break;
+//					}
+//					break;
+//				}
+//				catch(InputMismatchException e) {
+//					System.out.println("Wrong Input!");
+//					verity(LoginOrSignin());
+//				}
+//			case 2:
+//				new AdminPage();
+//				break;
+//			}
+//		}catch(InputMismatchException e) {
+//			System.out.println("Wrong Input!");
+//			WelcomeController.getInput(WelcomeController.roleSelection());
+//		}
 	}
 	
 	
